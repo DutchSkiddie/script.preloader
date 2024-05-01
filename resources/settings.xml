@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:059343344b53a3d412c83687690bba8b84bd198356696ffb8eb16b7cdc3649a4
-size 519
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="32001">
+        <setting label="32011" type="text" id="lastused" value="" visible="false"></setting>
+        <setting label="32011" type="text" id="lastusedpreset" value="" visible="false"></setting>
+        <setting label="32011" type="text" id="lastusedaddons" value="" visible="false"></setting>
+        <setting label="32011" type="text" id="lastusedaddonconfig" value="" visible="false"></setting>
+    </category>
+</settings>

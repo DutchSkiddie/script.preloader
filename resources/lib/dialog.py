@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:768c0dd4f77271eacabc058973d31abdc68dc04feff276c77e6b5a7a7d4ced54
-size 744
+import xbmcgui
+
+def Welcome():
+    response = xbmcgui.Dialog().ok('[COLOR firebrick]Preloader[/COLOR]', 'Make sure to back up your settings!')
+    if(response == False):
+        exit()        
+
+def SetupType():
+    setupchoice = xbmcgui.Dialog().yesnocustom('[COLOR firebrick]Preloader[/COLOR]', 'What do you want to do?','Save my Files', 'Custom', 'Preset')
+    return setupchoice
+
+def ConfirmSetup():
+    confirm = xbmcgui.Dialog().yesno('[COLOR orange][B]WARNING[/B][/COLOR]', 'You are about to overwrite your userdata folder.\n Are you sure?')
+    if(confirm == False):
+        exit()
+        
+def NotificationToggle():
+    notify = xbmcgui.Dialog().yesno('[COLOR orchid][B]SETUP INFO[/B][/COLOR]', 'Do you want details?')
+    return notify

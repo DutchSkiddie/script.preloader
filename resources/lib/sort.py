@@ -1,3 +1,76 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:548e71c8dbb0d724e7edfed8b2a2bc384ccfc9d057a512a7c583424a244ea83b
-size 2779
+from resources.lib import lists
+
+def sortAddons(list):
+    order = ["SKIN:", "REPO:", "PLUGIN:", "SERVICE:", "SCRIPT: "]
+    newlist = []
+    skinslist = []
+    repolist = []
+    pluginlist = []
+    servicelist = []
+    scriptlist = []
+        
+    for listitem in list:
+        if order[0] in listitem:
+            skinslist.append(listitem)
+        if order[1] in listitem:
+            repolist.append(listitem)
+        if order[2] in listitem:
+            pluginlist.append(listitem)
+        if order[3] in listitem:
+            servicelist.append(listitem)
+        if order[4] in listitem:
+            scriptlist.append(listitem)
+        
+    newlist.append(skinslist)
+    newlist.append(repolist)
+    newlist.append(pluginlist)
+    newlist.append(servicelist) 
+    newlist.append(scriptlist)
+       
+    return newlist
+ 
+def configitemreplace(configitem):
+        configitem = configitem.title()
+        configitem = configitem.replace('Plugin.Video.', 'VIDEO PLUGIN: ')
+        configitem = configitem.replace('Repository.', 'REPO: ')
+        configitem = configitem.replace('Script.', 'SCRIPT: ')
+        configitem = configitem.replace('Service.', 'SERVICE: ')
+        configitem = configitem.replace('Skin.', 'SKIN: ')
+        configitem = configitem.replace('.', ' ')
+        return configitem
+        
+def reverseconfigitemreplace(configitem):
+    configitem = configitem.replace('VIDEO PLUGIN: ', 'plugin.video.')
+    configitem = configitem.replace('REPO: ', 'repository.')
+    configitem = configitem.replace('SCRIPT: ', 'script.')
+    configitem = configitem.replace('SERVICE: ', 'service.')
+    configitem = configitem.replace('SKIN: ', 'skin.')
+    configitem = configitem.replace(' ', '.')
+    configitem = configitem.lower()
+    return configitem
+
+def FilterAddons(newaddonconfignames, lastusedaddonconfig):
+    finalList = []
+    lastUsedConfig = []
+    
+    for configitem in newaddonconfignames:
+        if (configitem.startswith('context') or configitem.startswith('resource') or configitem.startswith('script.module')) == False:
+            configitem = configitemreplace(configitem)
+            finalList.append(configitem)
+    
+    
+    
+    if not lastusedaddonconfig:        
+        for configitem in lastusedaddonconfig:
+            if (configitem.startswith('context') or configitem.startswith('resource') or configitem.startswith('script.module')) == False:
+                configitem = configitemreplace(configitem)
+                index = finalList.index(configitem)
+                lastUsedConfig.append(index)
+    
+    finalList = sortAddons(finalList)
+    lastUsedConfig = sortAddons(lastUsedConfig)
+    
+    
+    finalList = lists.chainlist(finalList)
+    lastUsedConfig = lists.chainlist(lastUsedConfig)
+    return finalList, lastUsedConfig
