@@ -6,6 +6,7 @@ A simple script that makes managing your Kodi presets less of a headache.
 | `time` | `personal` | *saved*. |
 
 ## Acknowledgements
+ - [Team Kodi (Kodi)](https://kodi.tv/about/team/)
  - [Jurialmunkey (Arctic Horizon 2)](https://github.com/jurialmunkey/skin.arctic.horizon.2)
  - [Jurialmunkey (ThemovieDB Helper)](https://github.com/sualfred/script.embuary.info)
  - [Ivarbrandt (Nimbus)](https://github.com/ivarbrandt/skin.nimbus)
@@ -14,3 +15,9 @@ A simple script that makes managing your Kodi presets less of a headache.
  - [Goldenfreddy0703 (Otaku)](https://github.com/Goldenfreddy0703/Otaku)
  - [Razzeee (Trakt)](https://github.com/razzeee/script.module.trakt)
  - [Sualfred (Embuary Info)](https://github.com/sualfred/script.embuary.info)
+
+### How to use
+  -  Download the [latest release]()
+  -  Allow installing from unknown sources and updating addons from any repository in Kodi.
+  -  Install the addon.
+  -  Get started saving your presets or using one of mine
