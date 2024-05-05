@@ -5,7 +5,7 @@ A simple script that makes managing your Kodi presets less of a headache.
 | :-------- | :------- | :------------------------- |
 | `time` | `personal` | *saved*. |
 | `space` | `storage` | *saved*. |
-| `access` | `ease of` | **attained**. |
+| `instant` | `streaming` | **achieved**. |
 
 ## Acknowledgements
  - [Team Kodi (Kodi)](https://kodi.tv/about/team/)
