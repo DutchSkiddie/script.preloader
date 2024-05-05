@@ -1,0 +1,16 @@
+# Preloader
+A simple script that makes managing your Kodi presets less of a headache.
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `time` | `personal` | *saved*. |
+
+## Acknowledgements
+ - [Jurialmunkey (Arctic Horizon 2)](https://github.com/jurialmunkey/skin.arctic.horizon.2)
+ - [Jurialmunkey (ThemovieDB Helper)](https://github.com/sualfred/script.embuary.info)
+ - [Ivarbrandt (Nimbus)](https://github.com/ivarbrandt/skin.nimbus)
+ - [AchillesPunks (Titan Bingie)](https://github.com/AchillesPunks/repository.titan.bingie.mod)
+ - [Team Crew (The Crew)](https://github.com/team-crew/team-crew.github.io)
+ - [Goldenfreddy0703 (Otaku)](https://github.com/Goldenfreddy0703/Otaku)
+ - [Razzeee (Trakt)](https://github.com/razzeee/script.module.trakt)
+ - [Sualfred (Embuary Info)](https://github.com/sualfred/script.embuary.info)
