@@ -6,22 +6,50 @@ from resources.lib import lists
 from resources.lib import vars
 from resources.lib import dialog
 from resources.lib import archive
-from resources.lib import scrub
 
+def InstallAddons(addons):
+    for addon in addons:
+        if (addon.startswith('repo')):
+            try:
+                print(str(xbmcaddon.Addon(addon)))
+            except:
+                if (xbmcgui.getCurrentWindowDialogId() != 10100) and (xbmcgui.getCurrentWindowDialogId() != 10101):
+                    xbmc.executebuiltin('InstallAddon("' + addon + '")')
+                xbmc.sleep(1000)
+                while(xbmcgui.getCurrentWindowDialogId() == 10100) or (xbmcgui.getCurrentWindowDialogId() == 10101):
+                    xbmc.sleep(500)
+    
+    for addon in addons:
+        if (addon.startswith('repo')):
+            try:
+                print(str(xbmcaddon.Addon(addon)))
+            except:
+                if (xbmcgui.getCurrentWindowDialogId() != 10100) and (xbmcgui.getCurrentWindowDialogId() != 10101):
+                    xbmc.executebuiltin('EnableAddon("' + addon + '")')
+                xbmc.sleep(1000)
+                while(xbmcgui.getCurrentWindowDialogId() == 10100) or (xbmcgui.getCurrentWindowDialogId() == 10101):
+                    xbmc.sleep(500)
+    
+    for addon in addons:    
+        try:
+            print(str(xbmcaddon.Addon(addon)))
+        except:
+            if (xbmcgui.getCurrentWindowDialogId() != 10100) and (xbmcgui.getCurrentWindowDialogId() != 10101):
+                xbmc.executebuiltin('InstallAddon("' + addon + '")')
+            xbmc.sleep(1000)
+            while(xbmcgui.getCurrentWindowDialogId() == 10100) or (xbmcgui.getCurrentWindowDialogId() == 10101):
+                xbmc.sleep(500)
+                
+    for addon in addons:
+        try:
+            print(str(xbmcaddon.Addon(addon)))
+        except:
+            if (xbmcgui.getCurrentWindowDialogId() != 10100) and (xbmcgui.getCurrentWindowDialogId() != 10101):
+                xbmc.executebuiltin('EnableAddon("' + addon + '")')
+            xbmc.sleep(1000)
+            while(xbmcgui.getCurrentWindowDialogId() == 10100) or (xbmcgui.getCurrentWindowDialogId() == 10101):
+                xbmc.sleep(500)
 
-def EnableAddon(id):    
-    try:
-        print(str(xbmcaddon.Addon(id)))
-    except:
-        xbmc.executebuiltin('EnableAddon("' + id + '")')
-        xbmc.sleep(1000)
-        while(xbmcgui.getCurrentWindowDialogId() == 10100):
-            xbmc.sleep(500)
-            
-def EnableAddons(addonlist):
-    defaultaddons = ['repository.jurialmunkey','repository.otaku','repository.thecrew','skin.arctic.horizon.2','script.trakt','script.embuary.info','plugin.video.themoviedb.helper','plugin.video.thecrew','plugin.video.otaku']
-    for addon in addonlist:
-        EnableAddon(addon)
         
 def ForceUpdate():
     xbmc.executebuiltin('UpdateLocalAddons')
@@ -33,35 +61,57 @@ def SetSkin(skinid):
     
 
 def Setup(setupchoice):
-    pathkodi, pathpresets, pathcustoms, pathaddons, lastused, lastusedpreset, lastusedaddons, lastusedaddonconfigtxt, currentplugins = vars.init()
+    pathkodi, pathpresets, pathcustoms, pathrepos, pathaddons, lastused, lastusedpreset, lastusedaddons, lastusedaddonconfigtxt = vars.init()
     pathaddons = pathkodi + os.sep + 'addons'
     pathuserdata = pathkodi + os.sep + 'userdata'
-    pathaddon = os.path.dirname(os.path.dirname(pathcustoms))
     
     if(setupchoice == 0):
-        [zip, zips] = archive.SelectZip(lastused, pathcustoms)
+        [zip, config] = archive.SelectZip(lastused, pathcustoms)
     if(setupchoice == 1):
-        [zip, zips] = archive.SelectZip(lastusedpreset, pathpresets)
+        zip = []
     if(setupchoice == 2):
-        zip = []   
+        zip = []
+        zipuserdata = [] 
         
-    if(setupchoice == 0) or (setupchoice == 1):    
-        addons, addonconfig = lists.AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi)
+    if(setupchoice == 0):
+        if (config == False):
+            addons, addonconfig, presetchoice, repos = lists.AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi, pathpresets) 
+        else:
+            addons = config
+            addonconfig = config
+            presetchoice = False
         skin = str(addonconfig[0])
         vars.SetCustomSettings(zip, addonconfig, addons)
         dialog.ConfirmSetup()
         notify = dialog.NotificationToggle()
-        archive.ExtractZip(notify, pathkodi, zip)
+        archive.ExtractZip(notify, pathkodi, zip, presetchoice)
         ForceUpdate()
-        EnableAddons(addonconfig)
+        xbmcgui.Dialog().textviewer('addonconfig', str(addonconfig))
+        InstallAddons(addonconfig)
+        SetSkin(skin)
+        
+    if(setupchoice == 1):    
+        addons, addonconfig, presetchoice, repos = lists.AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi, pathpresets)
+        skin = str(addonconfig[0])
+        zipuserdata = os.path.join(pathpresets, skin + '.zip')
+        vars.SetCustomSettings(zip, addonconfig, addons)
+        dialog.ConfirmSetup()
+        notify = dialog.NotificationToggle()
+        archive.ExtractZip(notify, pathaddons, pathrepos, False)
+        archive.ExtractZip(notify, pathkodi, zipuserdata, presetchoice)
+        ForceUpdate()
+        InstallAddons(addonconfig)
         SetSkin(skin)
         
     if(setupchoice == 2):
-        scrub.ClearApis(pathkodi)
-        ForceUpdate()
-        addons, addonconfig = lists.AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi)
-        skin = str(addonconfig[0])
-        archive.ArchiveZip(pathaddons, pathuserdata, pathaddon, skin, pathkodi)
+        skin = vars.GetSkin()
+        savetype = dialog.ChooseSaveType()
+        if (savetype == False):
+            setupchoice = 3
+        addons, addonconfig, presetchoice, repos = lists.AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi, pathpresets)
+        notify = dialog.NotificationToggle()
+        archive.ArchiveZip(pathaddons, pathuserdata, skin, pathkodi, savetype, addonconfig, repos)
+            
             
         
 def Exit(setupchoice):

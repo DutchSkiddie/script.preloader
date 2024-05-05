@@ -1,4 +1,5 @@
 from resources.lib import lists
+import xbmcgui
 
 def sortAddons(list):
     order = ["SKIN:", "REPO:", "PLUGIN:", "SERVICE:", "SCRIPT: "]
@@ -52,25 +53,23 @@ def reverseconfigitemreplace(configitem):
 def FilterAddons(newaddonconfignames, lastusedaddonconfig):
     finalList = []
     lastUsedConfig = []
-    
     for configitem in newaddonconfignames:
         if (configitem.startswith('context') or configitem.startswith('resource') or configitem.startswith('script.module')) == False:
             configitem = configitemreplace(configitem)
             finalList.append(configitem)
     
     
-    
-    if not lastusedaddonconfig:        
-        for configitem in lastusedaddonconfig:
-            if (configitem.startswith('context') or configitem.startswith('resource') or configitem.startswith('script.module')) == False:
-                configitem = configitemreplace(configitem)
-                index = finalList.index(configitem)
-                lastUsedConfig.append(index)
-    
+    # if not lastusedaddonconfig:        
+    for configitem in lastusedaddonconfig:
+        if (configitem.startswith('context') or configitem.startswith('resource') or configitem.startswith('script.module')) == False:
+            configitem = configitemreplace(configitem)
+            lastUsedConfig.append(configitem)
+
     finalList = sortAddons(finalList)
     lastUsedConfig = sortAddons(lastUsedConfig)
     
     
     finalList = lists.chainlist(finalList)
-    lastUsedConfig = lists.chainlist(lastUsedConfig)
+    lastUsedConfig = [val for sublist in lastUsedConfig for val in sublist]
+    
     return finalList, lastUsedConfig
