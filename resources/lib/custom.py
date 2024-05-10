@@ -6,7 +6,7 @@ from resources.lib import options
 from resources.lib import lists
 
 
-def CustomizeAddons(finalList, lastusedaddonconfig, pathkodi, setupchoice):
+def CustomizeAddons(finalList, lastusedaddonconfig, setupchoice):
     genrelists = sort.sortAddons(finalList)
     
     mainskin = []

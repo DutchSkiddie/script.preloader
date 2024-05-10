@@ -1,5 +1,4 @@
 import os
-import xbmcgui
 from resources.lib import custom
 from resources.lib import sort
 from resources.lib import options
@@ -51,7 +50,7 @@ def AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi
     
     
     if (setupchoice == 0) or (setupchoice == 1) or (setupchoice == 3):
-        configlistnames, presetchoice, repos, mainskin = (custom.CustomizeAddons(finalList, lastusedaddonconfig, pathkodi, setupchoice))         
+        configlistnames, presetchoice, repos, mainskin = (custom.CustomizeAddons(finalList, lastusedaddonconfig, setupchoice))         
     if (setupchoice == 2):
         presetchoice = []
         temp = []
@@ -62,13 +61,6 @@ def AddonList(zip, lastusedaddons, lastusedaddonconfigtxt, setupchoice, pathkodi
             temp.append(configlistname)
         configlistnames = temp
         del temp
-    # if (setupchoice == 0):
-        # configlistnames = sort.sortAddons(configlistnames)
-        # xbmcgui.Dialog().textviewer('configlistnames', str(configlistnames))
-        # for configlistname in configlistnames:
-        #     i = configlistnames.index(configlistname)
-        #     configlistname = sort.reverseconfigitemreplace(configlistname)
-        #     configlistnames[i] = configlistname
         
     
     return newaddons, configlistnames, presetchoice, repos
