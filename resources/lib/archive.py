@@ -191,7 +191,7 @@ def ArchiveZip(pathaddons, pathuserdata, skin, pathkodi, savetype, addonconfig, 
                 for root, dirs, files in os.walk(pathkodi):
                     for file in files:
                         if ('addons' in root) == True or ('userdata' in root) == True:
-                            if (str(now) in str(file)) == False and (str(now) in str(root)) == False and ('custom' in root) == False and ('presets' in root) == False and ('.git' in root) == False and ('.git' in file) == False:
+                            if ('script.preloader' in root) == False:
                                 temp = os.path.join(root, file)
                                 checkup.write(temp, os.path.relpath(temp, pathkodi))
                                 c+=1
