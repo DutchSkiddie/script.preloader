@@ -19,7 +19,7 @@ A simple script that makes managing your Kodi presets less of a headache.
  - [Sualfred (Embuary Info)](https://github.com/sualfred/script.embuary.info)
 
 ### How to use
-  -  Download the [latest release](https://github.com/DutchSkiddie/script.preloader/archive/refs/heads/development.zip)
+  -  Download the [latest release](https://github.com/DutchSkiddie/script.preloader/releases/download/v3.2.1/script.preloader-3.2.1.zip)
   -  Allow installing from unknown sources and updating addons from any repository in Kodi.
   -  Install the addon.
   -  Get started saving your presets or using one of mine
