@@ -19,7 +19,7 @@ def Paths():
     pathaddons = os.path.dirname(pathaddon)
     pathkodi = os.path.dirname(pathaddons)
     pathpresets = os.path.join(pathaddon, 'resources', 'presets')
-    pathcustoms = os.path.join(pathkodi, 'userdata', 'addon_data', 'script.preloader')
+    pathcustoms = [os.path.join(pathkodi, 'userdata', 'addon_data', 'script.preloader'), os.path.join(pathaddon, 'resources', 'custom')]
     pathrepos = os.path.join(pathaddon, 'resources', 'presets', 'repos.zip')
     
     return [pathkodi, pathaddons, pathpresets, pathcustoms, pathrepos]

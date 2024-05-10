@@ -119,28 +119,30 @@ def ExtractZip(notify, pathkodi, zip, preset):
         xbmcgui.Dialog().textviewer('[COLOR firebrick]~' + '{' + 'SETUP' + '}' + '~[/COLOR]', str(sshortlist))
 
 
-def SelectZip(lastused, pathzip):
+def SelectZip(lastused, pathszips):
     ziplist = []
     configlist = []
-    for file in os.listdir(pathzip):
-        if file.endswith(".zip"):
-            from zipfile import ZipFile
-            with ZipFile(os.path.join(pathzip, file)) as checkup:
-                c=0
-                d=0
-                conf=0
-                zips = checkup.namelist()
-                for i in zips:
-                    if 'addons' in i:
-                        c+=1
-                    if 'userdata' in i:
-                        d+=1
-                    if 'config.txt' in i:
-                        conf+=1
-                if (c > 0) and (d > 0):
-                    ziplist.append(file)
-                    if (conf > 0):
-                        configlist.append(file)    
+    for pathzip in pathszips:
+        if os.path.exists(pathzip):
+            for file in os.listdir(pathzip):
+                if file.endswith(".zip"):
+                    from zipfile import ZipFile
+                    with ZipFile(os.path.join(pathzip, file)) as checkup:
+                        c=0
+                        d=0
+                        conf=0
+                        zips = checkup.namelist()
+                        for i in zips:
+                            if 'addons' in i:
+                                c+=1
+                            if 'userdata' in i:
+                                d+=1
+                            if 'config.txt' in i:
+                                conf+=1
+                        if (c > 0) and (d > 0):
+                            ziplist.append(file)
+                            if (conf > 0):
+                                configlist.append(file)    
     
     try:
         indexy = zips.index(str(os.path.basename(lastused)))
