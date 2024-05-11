@@ -214,6 +214,10 @@ def ArchiveZip(pathaddons, pathuserdata, skin, pathkodi, savetype, addonconfig, 
                             temp = os.path.join(root, file)
                             checkup.write(temp, os.path.relpath(temp, pathkodi))
                             c+=1
+                        if ('plugin.video.fen' in addonconfig and 'plugin.video.fen' in root):
+                            temp = os.path.join(root, file)
+                            checkup.write(temp, os.path.relpath(temp, pathkodi))
+                            c+=1
                 checkup.writestr('config.txt', str(addonconfig))
                 c+=1
                 checkup.close()
