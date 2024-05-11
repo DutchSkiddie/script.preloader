@@ -42,8 +42,8 @@ def DialogCheck():
         p4 = DialogPass()
 
 def InstallAddon(addon, xml):
-    version = 0
-    while (version == 0):
+    version = -1
+    while (version == -1):
         try:
             DialogCheck()
             if (xbmcgui.getCurrentWindowDialogId() != 10100) and (xbmcgui.getCurrentWindowDialogId() != 10101):
