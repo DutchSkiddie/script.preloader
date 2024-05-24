@@ -1,0 +1,29 @@
+<options>
+    <repo name="repository.jurialmunkey">
+        <url>https://jurialmunkey.github.io/repository.jurialmunkey/repository.jurialmunkey-3.4.zip</url>
+    </repo>
+    <repo name="repository.ivarbrandt.test">
+        <url>https://github.com/ivarbrandt/repository.ivarbrandt.test/raw/main/repository.ivarbrandt.test-1.0.1.zip</url>
+    </repo>
+    <repo name="repository.thecrew">
+        <url>https://team-crew.github.io/repository.thecrew-0.3.6.zip</url>
+    </repo>
+    <repo name="plugin.video.fen">
+        <url>https://tikipeter.github.io/packages/plugin.video.fen-3.2.29.zip</url>
+    </repo>
+    <repo name="plugin.video.fenlight">
+        <url>https://tikipeter.github.io/packages/plugin.video.fenlight-1.0.52.zip</url>
+    </repo>
+    <repo name="skin.arctic.horizon.2">
+        <url>https://github.com/jurialmunkey/skin.arctic.horizon.2/archive/refs/tags/v0.8.27.zip</url>
+    </repo>
+    <repo name="repository.nixgates">
+        <url>https://nixgates.github.io/packages/repository.nixgates-2.2.0.zip</url>
+    </repo>
+    <repo name="repository.otaku">
+        <url>https://goldenfreddy0703.github.io/repository.otaku/repository.otaku-1.0.zip</url>
+    </repo>
+    <repo name="repository.cocoscrapers">
+        <url>https://cocojoe2411.github.io/repository.cocoscrapers-1.0.0.zip</url>
+    </repo>
+</options>

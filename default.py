@@ -1,8 +1,5 @@
-from resources.lib import dialog
-from resources.lib import setup  
+from resources.lib import setup
 
-
-if (__name__ == '__main__'):    
-    setupchoice = dialog.Welcome()
-    setup.Setup(setupchoice)
+if __name__ == '__main__':
+    setup.init()
     exit()

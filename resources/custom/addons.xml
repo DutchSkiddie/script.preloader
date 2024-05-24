@@ -1,0 +1,124 @@
+<options>
+    <addon name="skin.arctic.horizon.2">
+        <type>skin</type>
+        <repo>skin.arctic.horizon.2</repo>
+        <dependencies>
+            <dependency>script.embuary.info</dependency>
+            <dependency>plugin.video.themoviedb.helper</dependency>
+            <dependency>script.skinshortcuts</dependency>
+            <dependency>script.skinvariables</dependency>
+            <dependency>script.texturemaker</dependency>
+            <dependency>resource.images.weathericons.white</dependency>
+            <dependency>resource.images.studios.coloured</dependency>
+            <dependency>resource.font.robotocjksc</dependency>
+        </dependencies>
+    </addon>
+    <addon name="skin.nimbus">
+        <type>skin</type>
+        <repo>repository.ivarbrandt.test</repo>
+        <dependencies>
+            <dependency>script.nimbus.helper</dependency>
+            <dependency>script.embuary.info</dependency>
+            <dependency>plugin.video.themoviedb.helper</dependency>
+        </dependencies>
+    </addon>
+    <addon name="script.nimbus.helper">
+        <type>script</type>
+        <repo>repository.ivarbrandt.test</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="plugin.video.thecrew">
+        <type>movie provider</type>
+        <repo>repository.thecrew</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="plugin.video.fen">
+        <type>movie provider</type>
+        <repo>plugin.video.fen</repo>
+        <dependencies>
+            <dependency>script.module.cocoscrapers</dependency>
+        </dependencies>
+    </addon>
+    <addon name="plugin.video.fenlight">
+        <type>movie provider</type>
+        <repo>plugin.video.fenlight</repo>
+        <dependencies>
+            <dependency>script.module.cocoscrapers</dependency>
+        </dependencies>
+    </addon>
+    <addon name="script.module.cocoscrapers">
+        <type>script</type>
+        <repo>repository.cocoscrapers</repo>
+        <dependencies>
+            <dependency>script.module.cocoscrapers</dependency>
+        </dependencies>
+    </addon>
+    <addon name="plugin.video.seren">
+        <type>movie provider</type>
+        <repo>repository.nixgates</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="script.trakt">
+        <type>tracking provider</type>
+        <repo></repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="script.embuary.info">
+        <type>script</type>
+        <repo></repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="plugin.video.themoviedb.helper">
+        <type>widget</type>
+        <repo></repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="plugin.video.otaku">
+        <type>anime provider</type>
+        <repo>repository.otaku</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="script.skinshortcuts">
+        <type>script</type>
+        <repo>repository.jurialmunkey</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="script.skinvariables">
+        <type>script</type>
+        <repo>repository.jurialmunkey</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="script.texturemaker">
+        <type>script</type>
+        <repo>repository.jurialmunkey</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="resource.images.weathericons.white">
+        <type>resource</type>
+        <repo>repository.jurialmunkey</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="resource.images.studios.coloured">
+        <type>resource</type>
+        <repo>repository.jurialmunkey</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+    <addon name="resource.font.robotocjksc">
+        <type>resource</type>
+        <repo>repository.jurialmunkey</repo>
+        <dependencies>
+        </dependencies>
+    </addon>
+</options>
