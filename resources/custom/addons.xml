@@ -52,7 +52,6 @@
         <type>script</type>
         <repo>repository.cocoscrapers</repo>
         <dependencies>
-            <dependency>script.module.cocoscrapers</dependency>
         </dependencies>
     </addon>
     <addon name="plugin.video.seren">
