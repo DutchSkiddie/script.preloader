@@ -265,9 +265,12 @@ def CustomSetup():
             confirmedtype.append(addontypelist[i])
             confirmedrepo.append(addonrepolist[i])
             for depend in addondependencylist[i]:
-                idepend = addonnamelist.index(depend)
-                confirmedrepo.append(addonrepolist[idepend])
-            confirmeddependencies.append(addondependencylist[i])
+                if depend not in confirmedname:
+                    confirmedname.append(depend)
+                    confirmedtype.append(addontypelist[addonnamelist.index(depend)])
+                    confirmedrepo.append(addonrepolist[addonnamelist.index(depend)])
+                    confirmeddependencies.append(addondependencylist[addonnamelist.index(depend)])
+            confirmeddependencies.append(addondependencylist[addonnamelist.index(depend)])
                 
 
         addonpicked, addontype, temprepos, tempdepends = lists.MarkRequirements(confirmedname, confirmedtype, confirmedrepo, confirmeddependencies, -7)
@@ -386,7 +389,12 @@ def PresetSetup():
             confirmedrepo.append(addonrepolist[i])
             confirmeddependency = []
             for depend in addondependencylist[i]:
-                confirmeddependency.append(depend)
+                if depend not in confirmedname:
+                    confirmedname.append(depend)
+                    confirmedtype.append(addontypelist[addonnamelist.index(depend)])
+                    confirmedrepo.append(addonrepolist[addonnamelist.index(depend)])
+                    confirmeddependencies.append(addondependencylist[addonnamelist.index(depend)])
+                    confirmeddependency.append(depend)
             confirmeddependencies.append(confirmeddependency)
             
     optionals = dialog.ChooseOptionals(confirmedname, confirmeddependencies)
