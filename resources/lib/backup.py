@@ -307,7 +307,15 @@ def LoadBackup(backupzip):
     with ZipFile(pathzip) as checkup:
         addonfiles = [files for files in checkup.namelist() if files.startswith('addons') or files.startswith('userdata')]
         for file in addonfiles:
-            checkup.extract(file, pathkodi)
+            pathfile = os.path.normpath(os.path.join(pathkodi, file))
+            if os.path.exists(pathfile):
+                try:
+                    os.remove(pathfile)
+                    checkup.extract(file, pathkodi)
+                except:
+                    print(file + 'is being used by another process (Kodi)')
+            else:
+                checkup.extract(file, pathkodi)
         addons = [files for files in checkup.namelist() if files.startswith('addons.xml')]
         repos = [files for files in checkup.namelist() if files.startswith('repos.xml')]
         for addon in addons:
