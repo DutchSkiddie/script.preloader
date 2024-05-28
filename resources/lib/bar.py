@@ -6,6 +6,7 @@ import xbmcgui
 import dropbox
 from dropbox.files import WriteMode
 from dropbox.exceptions import ApiError, AuthError
+import asyncio
 import vars
 
 # FILENAME = ''
@@ -13,7 +14,7 @@ import vars
 refresh_token = vars.getdbxtoken()
 APP_KEY = 'njswlnwp0h03qyw'
 
-def backup(dbx, filename, destination):
+async def backup(dbx, filename, destination):
     with open(filename, 'rb') as file:
         file_size = os.path.getsize(filename)
         CHUNK_SIZE = 8*1024*1024
@@ -43,7 +44,7 @@ def backup(dbx, filename, destination):
                     dbx.files_upload_session_finish(file.read(CHUNK_SIZE), cursor, commit)
                     break
                 else:
-                    dbx.files_upload_session_append_v2(file.read(CHUNK_SIZE), cursor)
+                    await dbx.files_upload_session_append_v2(file.read(CHUNK_SIZE), cursor)
                     cursor.offset = file.tell()
         file.close()
 
@@ -109,8 +110,13 @@ def init():
                     response = xbmcgui.Dialog().select('[COLOR goldenrod]CLOUD-BACKUPS[/COLOR]', file_list, 0, 0, True)
                     zipname = file_list[response]
                     src = '/backups/' + zipname
+                    if not os.path.isdir(vars.PathBackups()):
+                        os.makedirs(vars.PathBackups())
                     dest = os.path.join(vars.PathBackups(), zipname)
-                    dbx.files_download_to_file(dest, src)
+                    try:
+                        dbx.files_download_to_file(dest, src)
+                    except ApiError as e:
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Error: ' + e)
                     xbmcgui.Dialog().notification('[COLOR goldenrod]SUCCESS[/COLOR]', 'Download succesful.')
                     # except:
                     #     xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
