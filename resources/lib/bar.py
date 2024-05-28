@@ -15,21 +15,37 @@ APP_KEY = 'njswlnwp0h03qyw'
 
 def backup(dbx, filename, destination):
     with open(filename, 'rb') as file:
+        file_size = os.path.getsize(filename)
+        CHUNK_SIZE = 8*1024*1024
         print("Uploading " + filename + " to Dropbox as " + destination + "...")
-        try:
-            dbx.files_upload(file.read(), destination, mode=WriteMode('overwrite'))
-        except ApiError as err:
-            if (err.error.is_path() and
-                    err.error.get_path().reason.is_insufficient_space()):
-                xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'ERROR: Cannot back up; insufficient space.')
-                exit()
-            elif err.user_message_text:
-                xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', err.user_message_text)
-                exit()
-            else:
-                xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', err)
-                exit()
-
+        
+        if file_size <= CHUNK_SIZE:
+            try:
+                dbx.files_upload(file.read(), destination, mode=WriteMode('overwrite'))
+            except ApiError as err:
+                if (err.error.is_path() and
+                        err.error.get_path().reason.is_insufficient_space()):
+                    xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'ERROR: Cannot back up; insufficient space.')
+                    exit()
+                elif err.user_message_text:
+                    xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', err.user_message_text)
+                    exit()
+                else:
+                    xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', err)
+                    exit()
+        else:
+            upload_sesh_start = dbx.files_upload_session_start(file.read(CHUNK_SIZE))
+            cursor = dropbox.files.UploadSessionCursor(session_id=upload_sesh_start.session_id, offset=file.tell())
+            commit = dropbox.files.CommitInfo(path=destination)
+            
+            while file.tell() <= file_size:
+                if (file_size - file.tell()) <= CHUNK_SIZE:
+                    dbx.files_upload_session_finish(file.read(CHUNK_SIZE), cursor, commit)
+                    break
+                else:
+                    dbx.files_upload_session_append_v2(file.read(CHUNK_SIZE), cursor)
+                    cursor.offset = file.tell()
+        file.close()
 
 def change_local_file(new_content):
     print("Changing contents of " + FILENAME + " on local machine...")
@@ -92,12 +108,15 @@ def init():
                         backupzip = xbmcgui.Dialog().browse(2, '[COLOR goldenrod]FILE BROWSER[/COLOR]', '')
                         if '_full_' in backupzip or '_config_' in backupzip:
                             browsing = False
+                            basename = os.path.basename(backupzip)
                         elif backupzip == '':
                             init()
                         else:
                             xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Invalid backup, check name.')
                             init()
-                basename = os.path.basename(backupzip)
+                else:
+                    basename = backupzips[response]
+                    backupzip = os.path.join(vars.PathBackups(), basename)
                 with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
                     try:
                         backup(dbx, backupzip, '/backups/' + basename)
