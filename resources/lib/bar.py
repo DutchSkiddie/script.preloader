@@ -94,7 +94,26 @@ def init():
             if response == -1 or response == 0:
                 init()
             if response == 1:
-                xbmcgui.Dialog().ok('NOT YET', 'PLEASE BE PATIENT.')
+                with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
+                    # try:
+                    backups = dbx.files_list_folder('/backups/', recursive=True)
+                    file_list = []
+                    for entry in backups.entries:
+                        if isinstance(entry, dropbox.files.FileMetadata):
+                            file_list.append(entry.name)
+                    while backups.has_more:
+                        backups = dbx.files_list_folder_continue(backups.cursor)
+                        for entry in backups.entries:
+                            if isinstance(entry, dropbox.files.FileMetadata):
+                                file_list.append(entry.name)
+                    response = xbmcgui.Dialog().select('[COLOR goldenrod]CLOUD-BACKUPS[/COLOR]', file_list, 0, 0, True)
+                    zipname = file_list[response]
+                    src = '/backups/' + zipname
+                    dest = os.path.join(vars.PathBackups(), zipname)
+                    dbx.files_download_to_file(dest, src)
+                    xbmcgui.Dialog().notification('[COLOR goldenrod]SUCCESS[/COLOR]', 'Download succesful.')
+                    # except:
+                    #     xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
             elif response == 2:
                 pathbackups = os.path.normpath(vars.PathBackups())
                 backupzips = [str(os.path.relpath(os.path.join(root, file), pathbackups)).split(os.sep)[0] for root, dirs, files in os.walk(pathbackups) for file in files if '_full_' in file or '_config_' in file]
