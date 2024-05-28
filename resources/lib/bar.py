@@ -62,7 +62,7 @@ def init():
         logged, uid, uname, umail = tokencheck()
         vars.setdbxtoken(refresh_token)
         
-    response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'CONTINUE', 'EXIT', 'LOGOUT')
+    response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX[/COLOR]', '[COLOR limegreen][LOGGED IN AS][/COLOR]' + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'CONTINUE', 'EXIT', 'LOGOUT')
     if response == -1 or response == 0:
         exit()
     elif response == 1:
@@ -70,11 +70,11 @@ def init():
         vars.setdbxtoken(refresh_token)
         init()
     elif response == 2:        
-        response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX SYNC[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'CONFIG', 'BACK', 'BACKUPS')
+        response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX SYNC[/COLOR]', '[COLOR limegreen][LOGGED IN AS][/COLOR]' + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'CONFIGS', 'BACK', 'BACKUPS')
         if response == -1 or response == 0:
             init()
         elif response == 1:
-            response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX ~BACKUPS~[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'SAVE TO DBX', 'BACK', 'LOAD FROM DBX')
+            response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX ~BACKUPS~[/COLOR]', '[COLOR limegreen][LOGGED IN AS][/COLOR]' + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'SAVE TO DBX', 'BACK', 'LOAD FROM DBX')
             if response == -1 or response == 0:
                 init()
             if response == 1:
@@ -118,7 +118,7 @@ def init():
             else:
                 reposxml = os.path.join(vars.PathCustom(), 'repos.xml')
             
-            response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX ~CONFIG~[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'SAVE TO DBX', 'BACK', 'LOAD FROM DBX')
+            response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX ~CONFIG~[/COLOR]', '[COLOR limegreen][LOGGED IN AS][/COLOR]' + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'SAVE TO DBX', 'BACK', 'LOAD FROM DBX')
             if response == -1 or response == 0:
                 init()
             if response == 1:
