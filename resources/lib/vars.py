@@ -124,11 +124,11 @@ def serenkodiversion():
             file.truncate()
             
 def getdbxtoken():
-    token = xbmcaddon.Addon().getSetting('dbxtoken')
-    return token
+    dbx_refresh_token = xbmcaddon.Addon().getSetting('dbx_refresh_token')
+    return dbx_refresh_token
 
 def setdbxtoken(token):
-    xbmcaddon.Addon().setSetting('dbxtoken', token)
+    xbmcaddon.Addon().setSetting('dbx_refresh_token', token)
             
 class Buttons:
     btn_continue = '[[COLOR limegreen][B]CONTINUE[/B][/COLOR]]'

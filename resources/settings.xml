@@ -4,6 +4,6 @@
         <setting label="32001" type="text" id="lastusedzip" value="" visible="false"></setting>
         <setting label="32002" type="text" id="lastusedpreset" value="" visible="false"></setting>
         <setting label="32003" type="text" id="lastusedaddons" value="" visible="false"></setting>
-        <setting label="32004" type="text" id="dbxtoken" value="" visible="false"></setting>
+        <setting label="32004" type="text" id="dbx_refresh_token" value="" visible="false"></setting>
     </category>
 </settings>

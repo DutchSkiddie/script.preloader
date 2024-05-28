@@ -13,21 +13,19 @@ import backup
 import bar
 
 def init():
-    # response = xbmcgui.Dialog().yesnocustom('[COLOR firebrick]Preloader[/COLOR]', '', 'DROPBOX', 'EXIT', 'SETUP')
-    # if response == -1 or response == 0:
-    #     exit()
-    # elif response == 1:
-    setup = dialog.SetupType()
-        
-    if setup == 'custom':
-        CustomSetup()
-    if setup == 'preset':
-        PresetSetup()
-    if setup == 'backup':
-        backup.init()
-            
-    # elif response == 2:
-    #     bar.init()
+    response = xbmcgui.Dialog().yesnocustom('[COLOR firebrick]Preloader[/COLOR]', '', 'DROPBOX', 'EXIT', 'SETUP')
+    if response == -1 or response == 0:
+        exit()
+    elif response == 1:
+        setup = dialog.SetupType()
+        if setup == 'custom':
+            CustomSetup()
+        if setup == 'preset':
+            PresetSetup()
+        if setup == 'backup':
+            backup.init()
+    elif response == 2:
+        bar.init()
 
 def InstallAddons(addons):
     pathaddons = vars.PathAddons()

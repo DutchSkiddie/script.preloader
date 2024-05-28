@@ -1,5 +1,6 @@
 import sys
 import os
+import webbrowser
 import xbmc
 import xbmcgui
 import dropbox
@@ -9,7 +10,8 @@ import vars
 
 # FILENAME = ''
 # DESTINATION = ''
-dbxtoken = vars.getdbxtoken()
+refresh_token = vars.getdbxtoken()
+APP_KEY = 'njswlnwp0h03qyw'
 
 def backup(dbx, filename, destination):
     with open(filename, 'rb') as file:
@@ -51,21 +53,21 @@ def select_revision(dbx):
     return revision.rev
 
 def init():
-    global dbxtoken
+    global refresh_token
     
     logged, uid, uname, umail = tokencheck()
     if not logged:
         while not logged:
             logged = dbxlogin()
         logged, uid, uname, umail = tokencheck()
-        vars.setdbxtoken(dbxtoken)
+        vars.setdbxtoken(refresh_token)
         
     response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'CONTINUE', 'EXIT', 'LOGOUT')
     if response == -1 or response == 0:
         exit()
     elif response == 1:
-        dbxtoken = ''
-        vars.setdbxtoken(dbxtoken)
+        refresh_token = ''
+        vars.setdbxtoken(refresh_token)
         init()
     elif response == 2:        
         response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX SYNC[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'CONFIG', 'BACK', 'BACKUPS')
@@ -81,7 +83,6 @@ def init():
             elif response == 2:
                 print('SAVE TO DBX')
         elif response == 2:
-            xbmcgui.Dialog().textviewer('CONFIG', 'CONFIG')
             addonsxmluser = os.path.join(vars.PathAddonUserdata(), 'addons.xml')
             reposxmluser = os.path.join(vars.PathAddonUserdata(), 'repos.xml')
             
@@ -98,14 +99,14 @@ def init():
             if response == -1 or response == 0:
                 init()
             if response == 1:
-                with dropbox.Dropbox(dbxtoken) as dbx:
+                with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
                     try:
                         dbx.files_download_to_file(addonsxmluser, '/custom/addons.xml')
                         dbx.files_download_to_file(reposxmluser, '/custom/repos.xml')
                     except:
                         xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
             elif response == 2:
-                with dropbox.Dropbox(dbxtoken) as dbx:
+                with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
                     backup(dbx, addonsxml, '/custom/addons.xml')
                     backup(dbx, reposxml, '/custom/repos.xml')
                     # except:
@@ -127,15 +128,15 @@ def init():
 
 
 def tokencheck():
-    global dbxtoken
+    global refresh_token
     
-    if (len(dbxtoken) == 0):
+    if (len(refresh_token) == 0):
         logged = False
         uid = ''
         uname = ''
         umail = ''
     else:
-        with dropbox.Dropbox(dbxtoken) as dbx:
+        with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
             try:
                 account = dbx.users_get_current_account()
                 uid = account.account_id.replace('dbid:', '')
@@ -144,7 +145,7 @@ def tokencheck():
                 logged = True
             except AuthError:
                 xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Invalid token.')
-                dbxtoken = ''
+                refresh_token = ''
                 uid = ''
                 uname = ''
                 umail = ''
@@ -152,27 +153,39 @@ def tokencheck():
     return logged, uid, uname, umail
 
 def dbxlogin():
-    global dbxtoken
-    
+    global refresh_token
+    logged = False
+    dbxauthcode = ''
+    auth_flow = dropbox.DropboxOAuth2FlowNoRedirect(APP_KEY, use_pkce=True, token_access_type='offline')    
     reponse = xbmcgui.Dialog().yesno('[COLOR goldenrod]DROPBOX LOGIN[/COLOR]', '', 'EXIT', 'LOGIN')
     if reponse:
-        keyboard = xbmc.Keyboard(dbxtoken, 'DROPBOX TOKEN')
-        keyboard.doModal()
-        if keyboard.isConfirmed():
-            dbxtoken = keyboard.getText()
-        if (len(dbxtoken) == 0):
-            xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Missing token.')
-            logged = False
-            return logged
-        with dropbox.Dropbox(dbxtoken) as dbx:
-            try:
-                dbx.users_get_current_account()
-                logged = True
-                return logged
-            except AuthError:
-                dbxtoken = ''
-                xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Invalid token.')
+        webbrowser.open(auth_flow.start())
+        while not logged:
+            keyboard = xbmc.Keyboard(dbxauthcode, '[COLOR goldenrod]Authorization code[/COLOR]')
+            keyboard.doModal()
+            if keyboard.isConfirmed():
+                dbxauthcode = keyboard.getText()
+            if (len(dbxauthcode) == 0):
+                xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Missing authorization code.')
                 logged = False
                 return logged
+            try:
+                oauth_result = auth_flow.finish(dbxauthcode)
+                refresh_token = oauth_result.refresh_token
+            except Exception as e:
+                xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Error: ' + e)
+                logged = False
+                return logged
+            
+            with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
+                try:
+                    dbx.users_get_current_account()
+                    logged = True
+                    return logged
+                except AuthError:
+                    refresh_token = ''
+                    xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Invalid token.')
+                    logged = False
+                    return logged
     else:
         exit()
