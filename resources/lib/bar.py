@@ -74,7 +74,6 @@ def init():
         if response == -1 or response == 0:
             init()
         elif response == 1:
-            xbmcgui.Dialog().textviewer('BACKUPS', 'BACKUPS')
             response = xbmcgui.Dialog().yesnocustom('[COLOR goldenrod]DROPBOX ~BACKUPS~[/COLOR]', '[COLOR goldenrod][UID][/COLOR]: ' + str(uid) + '\n[COLOR goldenrod][UNAME][/COLOR]: ' + str(uname) + '\n[COLOR goldenrod][EMAIL][/COLOR]: ' + str(umail), 'SAVE TO DBX', 'BACK', 'LOAD FROM DBX')
             if response == -1 or response == 0:
                 init()
