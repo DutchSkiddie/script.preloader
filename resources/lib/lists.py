@@ -2,8 +2,8 @@ import os
 import xbmc
 import xbmcgui
 from xml.etree import ElementTree as ET
-from resources.lib import vars
-from resources.lib import setup
+import vars
+import setup
 
 def Flatten(list):
     return [item for listitem in list for item in listitem]

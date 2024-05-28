@@ -4,10 +4,10 @@ import xbmcgui
 from datetime import datetime
 from zipfile import ZipFile
 from xml.etree import ElementTree as ET
-from resources.lib import dialog
-from resources.lib import vars
-from resources.lib import setup
-from resources.lib import lists
+import dialog
+import vars
+import setup
+import lists
 
 def init():
     response = dialog.Backup()
@@ -375,16 +375,26 @@ def LoadBackup(backupzip):
         i+=1
             
     xbmcgui.Dialog().textviewer('[COLOR firebrick]Install List[/COLOR]', configsum)
-      
-    # setup.DownloadRepos(confirmedrepo, localrepos, reponamelist, repourllist)        
+    
+    finaldepends = []
+    for depend in confirmeddependencies:
+        if depend not in finaldepends:
+            finaldepends.append(depend)
+    finalname = []
+    for name in confirmedname:
+        if name not in finalname:
+            finalname.append(name)
+    
+    if '_config_' in backupzip:
+        setup.DownloadRepos(list(set(confirmedrepo)), localrepos, reponamelist, repourllist)        
     setup.ForceUpdate()
-    setup.InstallAddons(confirmedrepo)
-    setup.InstallAddons(confirmeddependencies)
-    setup.InstallAddons(confirmedname)
+    setup.InstallAddons(list(set(confirmedrepo)))
+    setup.InstallAddons(finaldepends)
+    setup.InstallAddons(finalname)
     setup.ExtractOptionals(optionals)
     vars.SetLang()
     # vars.SetMainPlayer(mainvideoplayer)
-    vars.SetSkin(str(backupzip).split('_')[0])
+    vars.SetSkin(str(os.path.basename(backupzip)).split('_')[0])
         
 
 def doneb():

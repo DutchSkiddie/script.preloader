@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-    <category label="32001">
-        <setting label="32011" type="text" id="lastusedzip" value="" visible="false"></setting>
-        <setting label="32011" type="text" id="lastusedpreset" value="" visible="false"></setting>
-        <setting label="32011" type="text" id="lastusedaddons" value="" visible="false"></setting>
+<settings visible="false">
+    <category label="32000" visible="false">
+        <setting label="32001" type="text" id="lastusedzip" value="" visible="false"></setting>
+        <setting label="32002" type="text" id="lastusedpreset" value="" visible="false"></setting>
+        <setting label="32003" type="text" id="lastusedaddons" value="" visible="false"></setting>
+        <setting label="32004" type="text" id="dbxtoken" value="" visible="false"></setting>
     </category>
 </settings>

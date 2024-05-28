@@ -5,25 +5,33 @@ import xbmcaddon
 import asyncio
 from urllib import request
 from urllib.error import HTTPError
-from resources.lib import dialog
-from resources.lib import vars
-from resources.lib import lists
-from resources.lib import setup
-from resources.lib import backup
+import dialog
+import vars
+import lists
+import setup
+import backup
+import bar
 
 def init():
+    # response = xbmcgui.Dialog().yesnocustom('[COLOR firebrick]Preloader[/COLOR]', '', 'DROPBOX', 'EXIT', 'SETUP')
+    # if response == -1 or response == 0:
+    #     exit()
+    # elif response == 1:
     setup = dialog.SetupType()
-    
+        
     if setup == 'custom':
         CustomSetup()
     if setup == 'preset':
         PresetSetup()
     if setup == 'backup':
         backup.init()
+            
+    # elif response == 2:
+    #     bar.init()
 
 def InstallAddons(addons):
     pathaddons = vars.PathAddons()
-    for addon in addons:                    
+    for addon in addons:                 
         if isinstance(addon, (list, tuple)) and addon != []:
             for dependency in addon:
                 if dependency is not None and dependency != []:
@@ -85,6 +93,7 @@ def InstallAddon(addon, xml):
                         failed = True
                         continue
                 except:
+                    attempts+=1
                     if (xbmcgui.getCurrentWindowDialogId() != 10100) and (xbmcgui.getCurrentWindowDialogId() != 10101):
                         xbmc.executebuiltin('EnableAddon("' + addon + '")')
                     if attempts == 10:

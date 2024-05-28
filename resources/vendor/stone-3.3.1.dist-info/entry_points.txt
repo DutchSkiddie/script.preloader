@@ -1,0 +1,3 @@
+[console_scripts]
+stone = stone.cli:main
+

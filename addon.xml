@@ -3,6 +3,8 @@
         <import addon="xbmc.gui" version="5.17.0" />
         <import addon="xbmc.python" version="3.0.0" />
         <import addon="xbmc.addon" version="12.0.0" />
+        <import addon="script.module.six" />
+        <import addon="script.module.requests" />
     </requires>
     <extension point="xbmc.python.script" library="default.py">
         <provides>executable</provides>

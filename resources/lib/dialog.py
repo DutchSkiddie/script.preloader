@@ -1,7 +1,7 @@
 import os
 import xbmcgui
-from resources.lib import vars
-from resources.lib import setup
+import vars
+import setup
 
 def SetupType():
     response = xbmcgui.Dialog().yesnocustom("[COLOR firebrick]PRELOADER[/COLOR]\t{[COLOR limegreen]PRELOADED[/COLOR]}", '', 'BACKUP', 'CUSTOM', 'PRESET')
@@ -145,9 +145,23 @@ def Backup():
         elif response == 2:
             pathbackups = os.path.normpath(vars.PathBackups())
             backups = [str(os.path.relpath(os.path.join(root, file), pathbackups)).split(os.sep)[0] for root, dirs, files in os.walk(pathbackups) for file in files if '_full_' in file or '_config_' in file]
+            backups.append('[BROWSE]')
             response = xbmcgui.Dialog().select('[COLOR firebrick]|Preloaded|[/COLOR]\t[COLOR goldenrod][BACKUP MANAGER][/COLOR]', backups, 0, 0, True)
             if response == -1:
                 continue
+            elif backups[response] == '[BROWSE]':
+                browsing = True
+                while browsing == True:
+                    backup = xbmcgui.Dialog().browse(2, '[COLOR goldenrod]FILE BROWSER[/COLOR]', '')
+                    if '_full_' in backup or '_config_' in backup:
+                        asking = False
+                        browsing = False
+                        return backup
+                    elif backup == '':
+                        setup.init()
+                    else:
+                        xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Invalid backup, check name.')
+                        continue
             else:
                 backup = backups[response]
                 asking = False
