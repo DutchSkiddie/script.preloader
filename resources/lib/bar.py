@@ -79,9 +79,33 @@ def init():
             if response == -1 or response == 0:
                 init()
             if response == 1:
-                print('LOAD FROM DBX')
+                xbmcgui.Dialog().ok('NOT YET', 'PLEASE BE PATIENT.')
             elif response == 2:
-                print('SAVE TO DBX')
+                pathbackups = os.path.normpath(vars.PathBackups())
+                backupzips = [str(os.path.relpath(os.path.join(root, file), pathbackups)).split(os.sep)[0] for root, dirs, files in os.walk(pathbackups) for file in files if '_full_' in file or '_config_' in file]
+                backupzips.append('[BROWSE]')
+                response = xbmcgui.Dialog().select('[COLOR firebrick]|Preloaded|[/COLOR]\t[COLOR goldenrod][BACKUP MANAGER][/COLOR]', backupzips, 0, 0, True)
+                if response == -1:
+                    init()
+                elif backupzips[response] == '[BROWSE]':
+                    browsing = True
+                    while browsing == True:
+                        backupzip = xbmcgui.Dialog().browse(2, '[COLOR goldenrod]FILE BROWSER[/COLOR]', '')
+                        if '_full_' in backupzip or '_config_' in backupzip:
+                            browsing = False
+                        elif backupzip == '':
+                            init()
+                        else:
+                            xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Invalid backup, check name.')
+                            init()
+                basename = os.path.basename(backupzip)
+                with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
+                    try:
+                        backup(dbx, backupzip, '/backups/' + basename)
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]SUCCESS[/COLOR]', 'Backup saved.')
+                    except:
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
+                
         elif response == 2:
             addonsxmluser = os.path.join(vars.PathAddonUserdata(), 'addons.xml')
             reposxmluser = os.path.join(vars.PathAddonUserdata(), 'repos.xml')
@@ -103,12 +127,17 @@ def init():
                     try:
                         dbx.files_download_to_file(addonsxmluser, '/custom/addons.xml')
                         dbx.files_download_to_file(reposxmluser, '/custom/repos.xml')
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]SUCCESS[/COLOR]', 'Configuration files synced.')
                     except:
-                        xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
             elif response == 2:
                 with dropbox.Dropbox(oauth2_refresh_token=refresh_token, app_key=APP_KEY) as dbx:
-                    backup(dbx, addonsxml, '/custom/addons.xml')
-                    backup(dbx, reposxml, '/custom/repos.xml')
+                    try:
+                        backup(dbx, addonsxml, '/custom/addons.xml')
+                        backup(dbx, reposxml, '/custom/repos.xml')
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]SUCCESS[/COLOR]', 'Configuration files saved.')
+                    except:
+                        xbmcgui.Dialog().notification('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong.')
                     # except:
                     #     xbmcgui.Dialog().ok('[COLOR goldenrod]ERROR[/COLOR]', 'Something went wrong saving addons.xml')
                     # try:
